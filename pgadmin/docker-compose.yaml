@@ -1,6 +1,17 @@
 version: '1'
 
 services:
+
+  nodeapp:
+    image: basic-express-app
+    container_name: my-express-app-1
+    ports:
+      - "3000:3000"
+    depends_on:
+      - redis
+      - postgres
+      - pgadmin4
+
   redis:
     image: redis:alpine
     container_name: redis_1
@@ -12,8 +23,9 @@ services:
     restart: always
     container_name: postgres_1
     environment:
-      - POSTGRES_USER=pgsql
-      - POSTGRES_PASSWORD=12345678
+      POSTGRES_USER: pgsql
+      POSTGRES_PASSWORD: 12345678
+      POSTGRES_DB: test_db
     ports:
       - "5432:5432"
     volumes:
@@ -28,6 +40,6 @@ services:
 
 
       ports:
-        - "8080:8080"
+        - "8080:80"
       volumes:
         - ./servers.json:/pgadmin4/servers.json
