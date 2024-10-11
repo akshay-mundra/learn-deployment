@@ -1,0 +1,33 @@
+version: '1'
+
+services:
+  redis:
+    image: redis:alpine
+    container_name: redis_1
+    ports:
+      - "6379:6379"
+
+  postgres:
+    image: postgres
+    restart: always
+    container_name: postgres_1
+    environment:
+      - POSTGRES_USER=pgsql
+      - POSTGRES_PASSWORD=12345678
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data:/var/lib/postgresql/data
+
+  pgadmin4:
+      image: elestio/pgadmin
+      restart: always
+      environment:
+        PGADMIN_DEFAULT_EMAIL: admin@example.com
+        PGADMIN_DEFAULT_PASSWORD: adminpassword
+
+
+      ports:
+        - "8080:8080"
+      volumes:
+        - ./servers.json:/pgadmin4/servers.json
